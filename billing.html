@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Billing Page</title>
+    <script>
+        async function calculateUsage() {
+            const userId = document.getElementById("userId").value;
+            const minutes = document.getElementById("minutes").value;
+
+            const response = await fetch(`/billing/calculate/${userId}?minutes=${minutes}`, { method: 'POST' });
+            const data = await response.json();
+            document.getElementById("billResult").innerText = 'Total Billing: $' + data.amount;
+        }
+    </script>
+</head>
+<body>
+    <h1>Billing Calculation</h1>
+    <label>User ID: </label><input type="text" id="userId" /><br/>
+    <label>Minutes Used: </label><input type="text" id="minutes" /><br/>
+    <button onclick="calculateUsage()">Calculate Billing</button>
+    <p id="billResult"></p>
+</body>
+</html>
