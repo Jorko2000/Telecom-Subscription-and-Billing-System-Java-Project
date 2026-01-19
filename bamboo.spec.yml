@@ -1,0 +1,28 @@
+version: 2
+
+stages:
+  - Build
+  - Test
+  - Deploy
+
+jobs:
+  - Build:
+      tasks:
+        - checkout
+        - script:
+            interpreter: BINSH
+            scripts:
+              - mvn clean compile
+  - Test:
+      tasks:
+        - script:
+            interpreter: BINSH
+            scripts:
+              - mvn test
+  - Deploy:
+      tasks:
+        - script:
+            interpreter: BINSH
+            scripts:
+              - mvn package
+              - echo "Deploy artifact to server"
