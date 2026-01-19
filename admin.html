@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Panel</title>
+    <script>
+        async function createPlan() {
+            const name = document.getElementById("planName").value;
+            const rate = document.getElementById("planRate").value;
+            const dataLimit = document.getElementById("planData").value;
+
+            const response = await fetch('/admin/plan', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name: name, rate: parseFloat(rate), dataLimit: parseInt(dataLimit)})
+            });
+
+            const data = await response.json();
+            alert('Plan Created: ' + data.name);
+        }
+
+        async function listPlans() {
+            const response = await fetch('/admin/plans');
+            const plans = await response.json();
+            let html = "<ul>";
+            plans.forEach(plan => html += `<li>${plan.name} - Rate: $${plan.rate}/min, Data Limit: ${plan.dataLimit}MB</li>`);
+            html += "</ul>";
+            document.getElementById("planList").innerHTML = html;
+        }
+    </script>
+</head>
+<body>
+    <h1>Admin Panel</h1>
+    <h2>Create Plan</h2>
+    <label>Name: </label><input type="text" id="planName" /><br/>
+    <label>Rate per Minute: </label><input type="text" id="planRate" /><br/>
+    <label>Data Limit (MB): </label><input type="text" id="planData" /><br/>
+    <button onclick="createPlan()">Create Plan</button>
+
+    <h2>All Plans</h2>
+    <button onclick="listPlans()">Show Plans</button>
+    <div id="planList"></div>
+</body>
+</html>
