@@ -1,0 +1,25 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Telecom Dashboard</title>
+    <script>
+        async function calculateBill() {
+            const userId = document.getElementById("userId").value;
+            const minutes = document.getElementById("minutes").value;
+
+            const response = await fetch(`/billing/calculate/${userId}?minutes=${minutes}`, { method: 'POST' });
+            const data = await response.json();
+            document.getElementById("result").innerText = 'Total Bill: $' + data.amount;
+        }
+    </script>
+</head>
+<body>
+    <h1>Telecom Billing Dashboard</h1>
+    <p>Calculate your monthly bill:</p>
+    <label>User ID: </label><input type="text" id="userId" /><br/>
+    <label>Minutes Used: </label><input type="text" id="minutes" /><br/>
+    <button onclick="calculateBill()">Calculate Bill</button>
+    <p id="result"></p>
+</body>
+</html>
